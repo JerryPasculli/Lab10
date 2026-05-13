@@ -1,3 +1,5 @@
+import copy
+
 import networkx as nx
 
 from database.DAO import DAO
@@ -57,6 +59,26 @@ class Model:
         for element in daReturnare:
             stringa = stringa + "\n" + f"{element.StateNme}"
         return stringa
+
+    def statiRaggiungibili2(self, inizio):
+        inizio = self._Dnodi.get(int(inizio))
+        daVisitare = list(self._G.neighbors(inizio))
+        self._visitati = [inizio]
+        self.itera(daVisitare)
+        stringa = f"Elenco di nodi raggiungibili a partire da {inizio.StateNme}"
+        for element in self._visitati:
+            stringa = stringa + "\n" + f"{element.StateNme}"
+        return stringa
+
+    def itera(self, daVisitare):
+            for element in daVisitare:
+                if element not in self._visitati:
+                    self._visitati.append(element)
+                    daVisitare2 = self._G.neighbors(element)
+                    self.itera(daVisitare2)
+
+
+
 
 
 
